@@ -8,7 +8,7 @@ resource "aws_vpc" "main" {
   tags = merge(
     local.common_tags,
     {
-        Name = "${var.project}-${var.environment}" # Name of the VPC
+        Name = "${var.project}-${var.environment}" # Name of the VPC roboshop-dev
     }
   )
 }
