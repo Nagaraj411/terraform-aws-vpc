@@ -56,3 +56,18 @@ variable "nat_gateway_tags" {
   type    = map(string)
   default = {}
 }
+
+variable "public_route_table_tags" { # Tags for the public route table for other user creates there own tags
+  type    = map(string)
+  default = {}
+}
+
+variable "private_route_table_tags" { # Tags for the private route table for other user creates there own tags
+  type    = map(string)
+  default = {}
+}
+
+variable "database_route_table_tags" { # Tags for the database route table for other user creates there own tags
+  type    = map(string)
+  default = {}
+}
