@@ -28,7 +28,7 @@ resource "aws_internet_gateway" "main" { # this lines 16-22 create an Internet G
 
 #roboshop-dev-us-east-1a-public
 #roboshop-dev-us-east-1-public
-resource "aws_subnet" "public" {                                 # this lines 27-38 create public subnets
+resource "aws_subnet" "public" {                                 # this lines 31-45 create public subnets
   count                   = length(var.public_subnet_cidrs)      # create multiple public subnets based on the provided CIDR blocks
   vpc_id                  = aws_vpc.main.id                      # associate the subnet with the VPC created above
   cidr_block              = var.public_subnet_cidrs[count.index] # use the CIDR block from the list based on the index
@@ -46,7 +46,7 @@ resource "aws_subnet" "public" {                                 # this lines 27
 
 #roboshop-dev-us-east-1a-private
 #roboshop-dev-us-east-1b-private
-resource "aws_subnet" "private" {                           # this lline 44-55 create private subnets
+resource "aws_subnet" "private" {                           # this lline 49-62 create private subnets
   count             = length(var.private_subnet_cidrs)      # create multiple private subnets based on the provided CIDR blocks
   vpc_id            = aws_vpc.main.id                       # associate the subnet with the VPC created above
   cidr_block        = var.private_subnet_cidrs[count.index] # use the CIDR block from the list based on the index
@@ -61,9 +61,9 @@ resource "aws_subnet" "private" {                           # this lline 44-55 c
   )
 }
 
-#roboshop-dev-us-east-1a-database
-#roboshop-dev-us-east-1b-database
-resource "aws_subnet" "database" {                           # this lline 44-55 create database subnets
+# #roboshop-dev-us-east-1a-database
+# #roboshop-dev-us-east-1b-database
+resource "aws_subnet" "database" {                           # this lline 66-79 create database subnets
   count             = length(var.database_subnet_cidrs)      # create multiple database subnets based on the provided CIDR blocks
   vpc_id            = aws_vpc.main.id                        # associate the subnet with the VPC created above
   cidr_block        = var.database_subnet_cidrs[count.index] # use the CIDR block from the list based on the index
@@ -76,4 +76,32 @@ resource "aws_subnet" "database" {                           # this lline 44-55 
       Name = "${var.project}-${var.environment}-${local.az_names[count.index]}-database" # Name of the database subnet roboshop-dev-us-east-1a-database
     }
   )
+}
+
+# Create a elastic IP for the NAT Gateway
+resource "aws_eip" "nat" { # this lines 82-91 create an Elastic IP for the NAT Gateway
+  domain = "vpc"
+  tags = merge(
+    var.eip_tags, # this allows other users to specify their own tags for the Elastic IP
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.environment}" # Name of the Elastic IP roboshop-dev
+    }
+  )
+}
+
+# creating a NAT Gateway to allow instances in private subnets to access the internet
+resource "aws_nat_gateway" "main" { # this lines 94-107 create a NAT Gateway
+  allocation_id = aws_eip.nat.id # associate the Elastic IP with the NAT Gateway
+  subnet_id     = aws_subnet.public[0].id # place the NAT Gateway in the first public subnet
+
+  tags = merge(
+    var.nat_gateway_tags, # this allows other users to specify their own tags for the NAT Gateway
+    local.common_tags,
+    {
+      Name = "${var.project}-${var.environment}-nat-gateway" # Name of the NAT Gateway roboshop-dev-nat-gateway
+    }
+  )
+# This ensures that the NAT Gateway is created after the Internet Gateway and Elastic IP
+  depends_on = [ aws_internet_gateway.main]
 }

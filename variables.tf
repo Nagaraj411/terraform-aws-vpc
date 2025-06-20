@@ -46,3 +46,13 @@ variable "database_subnet_tags" { # Tags for the database subnets for other user
   type    = map(string)
   default = {}
 }
+
+variable "eip_tags" {
+  type = map(string)
+  default = {}
+}
+
+variable "nat_gateway_tags" {
+  type    = map(string)
+  default = {}
+}
