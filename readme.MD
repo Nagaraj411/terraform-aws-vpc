@@ -32,18 +32,36 @@ Terraform Cost Optimizer helps you **analyze, estimate, and optimize** your AWS 
 
 ## 🛠 Setup Instructions
 
-### ✅ 1. Clone the Repo
+## 🌐 VPC Setup Instructions (Terraform)
+
+This guide walks you through creating an AWS VPC, its associated resources, and peering it with another VPC using Terraform.
+
+---
+
+### ✅ 1. Initialize Terraform Project
 
 ```bash
-git clone https://github.com/Nagaraj411/terraform-aws-vpc.git
-cd terraform-cost-optimizer
+terraform init
 
-✅ 2. Install Dependencies
+✅ 2. Create a VPC
+Define your VPC in vpc.tf:
 
-pip install -r requirements.txt
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  tags = {
+    Name = "main-vpc"
+  }
+}
 
-boto3 — AWS SDK for Python
+✅ 3. Create Subnets
 
-openai — GPT-based AI logic
-
-- `python-hcl2` — For reading Terraform files
+resource "aws_subnet" "public" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
+  map_public_ip_on_launch = true
+  tags = {
+    Name = "main-public-subnet"
+  }
+}
