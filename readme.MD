@@ -91,9 +91,9 @@ Run Terraform commands to validate and apply the configuration. This provisions 
 
 terraform/
 
-├── main.tf
-├── variables.tf
-├── outputs.tf
-├── vpc.tf
-├── peering.tf
-├── README.md
+- main.tf
+- variables.tf
+- outputs.tf
+- vpc.tf
+- peering.tf
+- README.md
