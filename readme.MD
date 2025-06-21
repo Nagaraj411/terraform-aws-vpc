@@ -90,8 +90,7 @@ Run Terraform commands to validate and apply the configuration. This provisions 
 ## 📁 Folder Structure
 
 terraform/
-├── main.tf
-├── variables.tf
+├── main.tf ├── variables.tf
 ├── outputs.tf
 ├── vpc.tf
 ├── peering.tf
