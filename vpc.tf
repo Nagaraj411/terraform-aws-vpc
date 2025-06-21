@@ -76,7 +76,7 @@ resource "aws_subnet" "database" {                           # this lline 66-79 
       Name = "${var.project}-${var.environment}-${local.az_names[count.index]}-database" # Name of the database subnet roboshop-dev-us-east-1a-database
     }
   )
-}
+} 
 
 # Create a elastic IP for the NAT Gateway
 resource "aws_eip" "nat" { # this lines 82-91 create an Elastic IP for the NAT Gateway
