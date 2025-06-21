@@ -1,4 +1,4 @@
-## 🤖 Terraform Cost Optimizer (AI + AWS Pricing)
+# 🤖 Terraform Cost Optimizer (AI + AWS Pricing)
 This project analyzes your AWS Terraform infrastructure, estimates monthly costs using real-time AWS Pricing API, and suggests cost-saving alternatives using OpenAI's GPT model.
 
 * 📦 Features
