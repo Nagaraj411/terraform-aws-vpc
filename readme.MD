@@ -28,40 +28,71 @@ Terraform Cost Optimizer helps you **analyze, estimate, and optimize** your AWS 
   - `cost_estimator.py` — Pulls real AWS pricing
   - `ai_suggester.py` — AI cost-reduction logic
 
----
+# 🌐 Terraform VPC Setup with Peering – Project Overview
 
-## 🛠 Setup Instructions
-
-## 🌐 VPC Setup Instructions (Terraform)
-
-This guide walks you through creating an AWS VPC, its associated resources, and peering it with another VPC using Terraform.
+This Terraform module sets up a complete VPC environment on AWS, including subnets, internet gateway, route tables, and peering with another VPC. It is designed for modular infrastructure, multi-account support, and production-readiness.
 
 ---
 
-### ✅ 1. Initialize Terraform Project
+## 📋 Project Highlights
 
-```bash
-terraform init
+- Creates a customizable VPC with CIDR block of your choice.
+- Supports public and private subnets across multiple availability zones.
+- Sets up internet access through an Internet Gateway.
+- Configures custom route tables and associations for traffic routing.
+- Establishes VPC peering with another VPC (same or cross-account).
+- Adds routing between VPCs to enable secure communication.
+- Modular structure for easier reuse and integration into CI/CD pipelines.
 
-✅ 2. Create a VPC
-Define your VPC in vpc.tf:
+---
 
-resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = true
-  tags = {
-    Name = "main-vpc"
-  }
-}
+## 🚀 Setup Steps
 
-✅ 3. Create Subnets
+### Step 1: Initialize Terraform
 
-resource "aws_subnet" "public" {
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
-  map_public_ip_on_launch = true
-  tags = {
-    Name = "main-public-subnet"
-  }
-}
+Begin by initializing the Terraform project to install necessary providers and modules.
+
+### Step 2: Configure the VPC
+
+Define the CIDR range, name, and region for the primary VPC. Include subnet details for public and private access.
+
+### Step 3: Create Network Components
+
+Set up subnets, internet gateway, route tables, and associate them correctly to allow outbound internet access and internal routing.
+
+### Step 4: Configure VPC Peering
+
+Establish a peering connection between the current VPC and a target peer VPC. This enables private connectivity between them.
+
+### Step 5: Accept the Peering Connection
+
+If peering is across different AWS accounts or regions, configure acceptance of the connection from the peer side.
+
+### Step 6: Add Routing for Peering
+
+Modify the route tables in both VPCs to allow traffic to flow across the peered VPCs using their respective CIDR ranges.
+
+### Step 7: Apply the Configuration
+
+Run Terraform commands to validate and apply the configuration. This provisions all infrastructure resources.
+
+---
+
+## 🛡️ Best Practices
+
+- Use remote state backend (like S3 + DynamoDB) for collaboration and state locking.
+- Parameterize environment-specific values using input variables.
+- Output key resource values (e.g., VPC ID, subnet IDs) for downstream modules.
+- Follow least privilege principle for IAM roles used with Terraform.
+
+---
+
+## 📁 Folder Structure
+
+terraform/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── vpc.tf
+├── peering.tf
+├── README.md
