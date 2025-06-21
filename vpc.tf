@@ -76,7 +76,7 @@ resource "aws_subnet" "database" {                           # this lline 66-79 
       Name = "${var.project}-${var.environment}-${local.az_names[count.index]}-database" # Name of the database subnet roboshop-dev-us-east-1a-database
     }
   )
-} 
+}
 
 # Create a elastic IP for the NAT Gateway
 resource "aws_eip" "nat" { # this lines 82-91 create an Elastic IP for the NAT Gateway
@@ -91,8 +91,8 @@ resource "aws_eip" "nat" { # this lines 82-91 create an Elastic IP for the NAT G
 }
 
 # creating a NAT Gateway to allow instances in private subnets to access the internet
-resource "aws_nat_gateway" "main" { # this lines 94-107 create a NAT Gateway
-  allocation_id = aws_eip.nat.id # associate the Elastic IP with the NAT Gateway
+resource "aws_nat_gateway" "main" {       # this lines 94-107 create a NAT Gateway
+  allocation_id = aws_eip.nat.id          # associate the Elastic IP with the NAT Gateway
   subnet_id     = aws_subnet.public[0].id # place the NAT Gateway in the first public subnet
 
   tags = merge(
@@ -102,8 +102,8 @@ resource "aws_nat_gateway" "main" { # this lines 94-107 create a NAT Gateway
       Name = "${var.project}-${var.environment}-nat-gateway" # Name of the NAT Gateway roboshop-dev-nat-gateway
     }
   )
-# This ensures that the NAT Gateway is created after the Internet Gateway and Elastic IP
-  depends_on = [ aws_internet_gateway.main]
+  # This ensures that the NAT Gateway is created after the Internet Gateway and Elastic IP
+  depends_on = [aws_internet_gateway.main]
 }
 
 # Create route tables for public subnets This line 110-119 creates a route table for public subnets
@@ -166,21 +166,21 @@ resource "aws_route" "database" {
 
 # Associate public subnets with the public route table This line 168-172 associates each public subnet with the public route table
 resource "aws_route_table_association" "public" {
-  count = length(var.public_subnet_cidrs) 
+  count          = length(var.public_subnet_cidrs)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
 # associate private subnets with the private route table This line 175-179 associates each private subnet with the private route table
 resource "aws_route_table_association" "private" {
-  count = length(var.private_subnet_cidrs) 
+  count          = length(var.private_subnet_cidrs)
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
 
 # associate database subnets with the database route table This line 182-186 associates each database subnet with the database route table
 resource "aws_route_table_association" "database" {
-  count = length(var.database_subnet_cidrs)
-  subnet_id = aws_subnet.database[count.index].id
+  count          = length(var.database_subnet_cidrs)
+  subnet_id      = aws_subnet.database[count.index].id
   route_table_id = aws_route_table.database.id
 }

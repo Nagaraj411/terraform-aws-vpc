@@ -48,7 +48,7 @@ variable "database_subnet_tags" { # Tags for the database subnets for other user
 }
 
 variable "eip_tags" {
-  type = map(string)
+  type    = map(string)
   default = {}
 }
 
@@ -73,7 +73,7 @@ variable "database_route_table_tags" { # Tags for the database route table for o
 }
 
 variable "is_peering_required" { # Flag to indicate if VPC peering is required
-  default = false # if want to connect to default VPC, perring will be created otherwise it will not be created
+  default = false                # if want to connect to default VPC, perring will be created otherwise it will not be created
 }
 
 variable "vpc_peering_tags" { # Tags for the VPC peering connection for other user creates there own tags
