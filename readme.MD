@@ -30,10 +30,20 @@ Terraform Cost Optimizer helps you **analyze, estimate, and optimize** your AWS 
 
 ---
 
+## 🛠 Setup Instructions
 
-This module is developed for joindevops company. Projects inside joindevops follows this module to create their VPC.
+### ✅ 1. Clone the Repo
 
-## Inputs
-* project (required) - Users should specify their project name
-* environment (required) - Users should specify their environment
-* cidr_block (optional) - Users can provide their CIDR block. Default is 10.0.0.0/16
+```bash
+git clone https://github.com/Nagaraj411/terraform-aws-vpc.git
+cd terraform-cost-optimizer
+
+✅ 2. Install Dependencies
+
+pip install -r requirements.txt
+
+boto3 — AWS SDK for Python
+
+openai — GPT-based AI logic
+
+- `python-hcl2` — For reading Terraform files
