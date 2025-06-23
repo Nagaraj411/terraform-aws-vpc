@@ -64,7 +64,7 @@ variable "public_route_table_tags" { # Tags for the public route table for other
 
 variable "private_route_table_tags" { # Tags for the private route table for other user creates there own tags
   type    = map(string)
-  default = {}
+  default = {} # this is the default value for the private route table tags, & it is not madatory to use it in test module
 }
 
 variable "database_route_table_tags" { # Tags for the database route table for other user creates there own tags
